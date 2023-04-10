@@ -1,5 +1,17 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/I5DP-Kdb)
-# CSE330
-REPLACE-THIS-TEXT-WITH-YOUR-NAME-STUDENT-ID-AND-GITHUB-USERNAME
-
-REPLACE-THIS-TEXT-WITH-YOUR-PARTNERS-NAME-STUDENT-ID-AND-GITHUB-USERNAME
+Rubric turned in on time (5 points)
+Approved by Jacob Marks
+Languages/Frameworks used (20 points)
+10 - React.js
+10 - Express.js
+0 - MySQL
+Functionality (60 points)
+10 Users can register, login, and logout
+5 Implementing animations on buttons using framer motion
+10 Logged in users can add their top 5 songs to the site using spotify search
+5 Logged in users can view other users profiles
+5 Logged in users can vote on other users songs
+10 Database contains Users, some kind of ID for their top songs
+Best Practices (5 points)
+3 Code is readable and well formatted
+2 All pages pass the html validator
+Creative Portion (10 points)
