@@ -6,9 +6,9 @@ function Homepage({ userData }) {
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:1234/api/get").then((data) => {
+    /*axios.get("http://localhost:1234/api/get").then((data) => {
       setUserList(data.data);
-    });
+    });*/
   }, []);
 
   return (

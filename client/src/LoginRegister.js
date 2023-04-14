@@ -127,7 +127,6 @@ function DatabaseAdd(props) {
       .catch((error) => {
         console.log(error);
       });
-
     // nvm totally doesnt work
     console.log("client side: " + props.token);
     axios.post("http://localhost:1234/api/newuser", {
