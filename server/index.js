@@ -22,9 +22,6 @@ app.get("/api/dbconnection", (req, res) => {
 });*/
 
 app.post("/api/newuser", (req, res) => {
-  const id = req.body.id;
-  const display_name = req.body.display_name;
-  console.log(req);
   // Check if the user already exists
   db.query("SELECT id FROM users WHERE id = ?", [id], (err, result) => {
     let displayName = req.body.displayName;

@@ -19,13 +19,7 @@ function LoginRegister({ onLogin, onRegister }) {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
     let display_name = window.localStorage.getItem("display_name");
-    console.log(localStorage.getItem("timeToken"));
-    console.log(Date.now());
-    if (
-      //!token &&
-      hash &&
-      Date.now() - localStorage.getItem("timeToken") > 3599
-    ) {
+    if (hash && Date.now() - localStorage.getItem("timeToken") > 3599) {
       token = hash
         .substring(1)
         .split("&")
@@ -48,6 +42,15 @@ function LoginRegister({ onLogin, onRegister }) {
       setisLogged(true);
       console.log("logged in with token: " + token);
       console.log("username: " + JSON.stringify(display_name));
+
+      const handleDatabaseAdd = () => {
+        return (
+          <>
+            <DatabaseAdd token={token} auth={CLIENT_ID} />
+          </>
+        );
+      };
+      handleDatabaseAdd();
     } else {
       setisLogged(false);
     }
@@ -62,7 +65,6 @@ function LoginRegister({ onLogin, onRegister }) {
     <>
       {isLogged ? (
         <>
-          <DatabaseAdd token={token} auth={CLIENT_ID} />
           <Homepage userData={{ id: token }} />
         </>
       ) : (
@@ -97,46 +99,63 @@ function DatabaseAdd(props) {
       })
       .then((response) => {
         // update the state variables here
-        setDisplayName(response.data.display_name);
-        setUserId(response.data.id);
+        Promise.all([
+          setDisplayName(response.data.display_name),
+          setUserId(response.data.id),
+        ]);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(() => {
+        let topSongs = axios
+          .get("https://api.spotify.com/v1/me/top/tracks", {
+            headers: {
+              Authorization: `Bearer ${props.token}`,
+            },
+            params: {
+              limit: 5,
+              offset: 0,
+            },
+          })
+          .then((response) => {
+            // update the state variables here
+            const ids = [];
+            const titles = [];
+            const artists = [];
+            const albums = [];
 
-    // ERROR: 404 error
-    let topSongs = axios
-      .get("https://api.spotify.com/v1/me/top/tracks", {
-        headers: {
-          Authorization: `Bearer ${props.token}`,
-        },
-        params: {
-          limit: 5,
-          offset: 0,
-        },
-      })
-      .then((response) => {
-        // update the state variables here
-        for (let i = 0; i < 5; i++) {
-          setIds([response.data.items[i].id]);
-          setTitles([response.data.items[i].name]);
-          setArtist([response.data.items[i].artists[0].name]);
-          setAlbum([response.data.items[i].album.name]);
-        }
+            for (let i = 0; i < 5; i++) {
+              ids.push(response.data.items[i].id);
+              titles.push(response.data.items[i].name);
+              artists.push(response.data.items[i].artists[0].name);
+              albums.push(response.data.items[i].album.name);
+            }
+
+            Promise.all([
+              setIds(ids),
+              setTitles(titles),
+              setArtist(artists),
+              setAlbum(albums),
+            ]);
+          })
+          .then(() => {
+            // nvm totally doesnt work
+            console.log("second");
+            console.log("client side: " + props.token);
+            axios.post("http://localhost:1234/api/newuser", {
+              userId: userId,
+              displayName: displayName,
+              songId: ids,
+              songTitle: titles,
+              songArtist: artist,
+              songAlbum: album,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
       });
-    // nvm totally doesnt work
-    console.log("client side: " + props.token);
-    axios.post("http://localhost:1234/api/newuser", {
-      userId: userId,
-      displayName: displayName,
-      songId: ids,
-      songTitle: titles,
-      songArtist: artist,
-      songAlbum: album,
-    });
   }, [access_token]);
 
   // return null since this component doesn't render anything
