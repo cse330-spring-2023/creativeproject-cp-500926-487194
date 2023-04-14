@@ -41,9 +41,19 @@ app.post("/api/newuser", (req, res) => {
       let song4 = {};
       let song5 = {};
       let arr = [song1,song2, song3,song4,song5]
-      for(let i = 0; i<5; i++){
-        arr[i] = {songId: req.body.songId[i], songName: req.body.songName[i], artist: req.body.songArtist[i], album: req.body.songAlbum[i]}
-      }
+
+      if (req.body.songId && req.body.songName && req.body.songArtist && req.body.songAlbum && 
+        req.body.songId.length > 0 && req.body.songName.length > 0 && 
+        req.body.songArtist.length > 0 && req.body.songAlbum.length > 0) {
+            for(let i = 0; i<5; i++){
+                arr[i] = {songId: req.body.songId[i], songName: req.body.songName[i], artist: req.body.songArtist[i], album: req.body.songAlbum[i]}
+              }
+        }
+        else {
+            console.log("songs be empty");
+        }
+
+
 
       if (err) {
         console.log(`User with ID ${id} already exists, updating information`);
