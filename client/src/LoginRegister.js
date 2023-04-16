@@ -42,15 +42,6 @@ function LoginRegister({ onLogin, onRegister }) {
       setisLogged(true);
       console.log("logged in with token: " + token);
       console.log("username: " + JSON.stringify(display_name));
-
-      const handleDatabaseAdd = () => {
-        return (
-          <>
-            <DatabaseAdd token={token} auth={CLIENT_ID} />
-          </>
-        );
-      };
-      handleDatabaseAdd();
     } else {
       setisLogged(false);
     }
@@ -66,6 +57,7 @@ function LoginRegister({ onLogin, onRegister }) {
       {isLogged ? (
         <>
           <Homepage userData={{ id: token }} />
+          <DatabaseAdd token={token} auth={CLIENT_ID} />
         </>
       ) : (
         <>
@@ -77,14 +69,21 @@ function LoginRegister({ onLogin, onRegister }) {
 }
 
 function DatabaseAdd(props) {
-  console.log("calling db add: " + props.token);
+  console.log("calling db add");
   //token, display name, 5 song id, title, artist, album
-  const [userId, setUserId] = useState("");
+  /*const [userId, setUserId] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [ids, setIds] = useState([]);
   const [titles, setTitles] = useState([]);
   const [artist, setArtist] = useState([]);
-  const [album, setAlbum] = useState([]);
+  const [album, setAlbum] = useState([]);*/
+
+  let displayName = "";
+  let userId = "";
+  let ids = [];
+  let titles = [];
+  let artist = [];
+  let album = [];
 
   const access_token = props.token;
 
@@ -99,10 +98,10 @@ function DatabaseAdd(props) {
       })
       .then((response) => {
         // update the state variables here
-        Promise.all([
-          setDisplayName(response.data.display_name),
-          setUserId(response.data.id),
-        ]);
+        //setDisplayName(response.data.display_name);
+        //setUserId(response.data.id);
+        userId = response.data.id;
+        displayName = response.data.display_name;
       })
       .then(() => {
         let topSongs = axios
@@ -117,29 +116,31 @@ function DatabaseAdd(props) {
           })
           .then((response) => {
             // update the state variables here
-            const ids = [];
-            const titles = [];
-            const artists = [];
-            const albums = [];
+            const tempIds = [];
+            const tempTitles = [];
+            const tempArtists = [];
+            const tempAlbums = [];
 
             for (let i = 0; i < 5; i++) {
-              ids.push(response.data.items[i].id);
-              titles.push(response.data.items[i].name);
-              artists.push(response.data.items[i].artists[0].name);
-              albums.push(response.data.items[i].album.name);
+              tempIds.push(response.data.items[i].id);
+              tempTitles.push(response.data.items[i].name);
+              tempArtists.push(response.data.items[i].artists[0].name);
+              tempAlbums.push(response.data.items[i].album.name);
             }
-
-            Promise.all([
-              setIds(ids),
-              setTitles(titles),
-              setArtist(artists),
-              setAlbum(albums),
-            ]);
+            //setIds(ids);
+            //setTitles(titles);
+            //setArtist(artists);
+            //setAlbum(albums);
+            ids = tempIds;
+            titles = tempTitles;
+            artist = tempArtists;
+            album = tempAlbums;
           })
           .then(() => {
             // nvm totally doesnt work
             console.log("second");
             console.log("client side: " + props.token);
+
             axios.post("http://localhost:1234/api/newuser", {
               userId: userId,
               displayName: displayName,

@@ -1,20 +1,13 @@
-
-
-
-const mysql = require('mysql');
+const mysql = require("mysql2");
 
 var db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "16brc8873",
-    database: "330creative"
-  });
+  host: "localhost",
+  user: "spotifyApp",
+  password: "3000",
+  database: "330creative",
+});
 
-  module.exports = db;
-
-
-
-
+module.exports = db;
 
 /*
   app.post('/api/create', (req,res)=> {
@@ -31,7 +24,3 @@ var db = mysql.createConnection({
     });   })
 
 */
-
-
-
-
