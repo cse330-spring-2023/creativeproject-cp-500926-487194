@@ -71,48 +71,54 @@ app.post("/api/newuser", (req, res) => {
         userExists = true;
       }
       controller.abort();
+
+      if (!userExists) {
+        console.log("inserting.....");
+        db.query(
+          "INSERT INTO users (userId, displayName, song1, song2, song3, song4, song5) VALUES (?,?,?,?,?,?,?)",
+          [
+            userId,
+            displayName,
+            JSON.stringify(arr[0]),
+            JSON.stringify(arr[1]),
+            JSON.stringify(arr[2]),
+            JSON.stringify(arr[3]),
+            JSON.stringify(arr[4]),
+          ],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.sendStatus(500);
+            } else {
+              console.log(`User with ID ${userId} added to database`);
+              res.sendStatus(201);
+            }
+          }
+        );
+      } else if (result.length > 0) {
+        console.log("updating user info");
+        db.query(
+          "UPDATE users SET song1 = ?, song2 = ?, song3 = ?, song4 = ?, song5 = ?",
+          [
+            JSON.stringify(arr[0]),
+            JSON.stringify(arr[1]),
+            JSON.stringify(arr[2]),
+            JSON.stringify(arr[3]),
+            JSON.stringify(arr[4]),
+          ],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.sendStatus(500);
+            } else {
+              console.log("Successfully updated database");
+              res.sendStatus(201);
+            }
+          }
+        );
+      }
     }
   );
-
-  if (!userExists) {
-    console.log("inserting.....");
-    db.query(
-      "INSERT INTO users (userId, displayName, song1, song2, song3, song4, song5) VALUES (?,?,?,?,?,?,?)",
-      [
-        userId,
-        displayName,
-        JSON.stringify(arr[0]),
-        JSON.stringify(arr[1]),
-        JSON.stringify(arr[2]),
-        JSON.stringify(arr[3]),
-        JSON.stringify(arr[4]),
-      ],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-        } else {
-          console.log(`User with ID ${userId} added to database`);
-          res.sendStatus(201);
-        }
-      }
-    );
-  } else if (result.length > 0) {
-    console.log("updating user info");
-    db.query(
-      "UPDATE spotify SET song1 = ?, song2 = ?, song3 = ?, song4 = ?, song5 = ?",
-      [arr[0], arr[1], arr[2], arr[3], arr[4]],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-        } else {
-          console.log("Successfully updated database");
-          res.sendStatus(201);
-        }
-      }
-    );
-  }
 });
 
 app.listen(1234, () => {
