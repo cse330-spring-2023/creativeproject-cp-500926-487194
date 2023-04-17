@@ -1,0 +1,33 @@
+.navButton{
+    display: inline-block;
+    border-style: solid;
+    border-color: #66dd67;
+    border-radius: 5%;
+    text-align: center;
+    margin:50px;
+    width:175px;
+}
+
+.background{
+   background-color: #22282fff;
+}
+
+.text{
+    color: #fafafaff;
+}
+
+.songBox{
+    width: 125px;
+    height: 125px;
+    display: inline-block;
+    margin: 10px;
+    border-color: #000000;
+    border-width: 1px;
+    border-style: solid;
+    object-fit: cover;
+}
+
+.song{
+    max-width: 100%;
+    max-height: 100%;
+}
