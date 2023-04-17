@@ -19,8 +19,7 @@ function LoginRegister({ onLogin, onRegister }) {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
     let display_name = window.localStorage.getItem("display_name");
-    // CHECK THIS DATE THING IN THE IF STATEMENT IT WASN'T LOGGING ME IN
-    if (hash /*&& Date.now() - localStorage.getItem("timeToken") > 3599*/) {
+    if (hash && Date.now() - localStorage.getItem("timeToken") > 3599) {
       token = hash
         .substring(1)
         .split("&")
@@ -32,7 +31,10 @@ function LoginRegister({ onLogin, onRegister }) {
       window.localStorage.setItem("token", token);
       window.localStorage.setItem("display_name", display_name);
     }
-    if ( token != null && Date.now() - localStorage.getItem("timeToken") < 3599) {
+    if (
+      token != null &&
+      Date.now() - localStorage.getItem("timeToken") < 3599
+    ) {
       // They are logged in, do database stuff. Pull all information we need from spotify to database. token, display name, 5 song id, title, artist, album
 
       // CALL DatabaseAdd
@@ -41,7 +43,6 @@ function LoginRegister({ onLogin, onRegister }) {
       console.log("logged in with token: " + token);
       console.log("username: " + JSON.stringify(display_name));
     } else {
-      console.log("not logged in");
       setisLogged(false);
     }
   }, []);
@@ -68,6 +69,8 @@ function LoginRegister({ onLogin, onRegister }) {
 }
 
 function DatabaseAdd(props) {
+  console.log("calling db add");
+  //token, display name, 5 song id, title, artist, album
 
   let displayName = "";
   let userId = "";
@@ -77,10 +80,9 @@ function DatabaseAdd(props) {
   let album = [];
 
   const access_token = props.token;
-  console.log("Top of API requests");
+
   // This one isn't erroring !! (I think)
   useEffect(() => {
-    console.log("API request 1");
     let que = axios
       .get("https://api.spotify.com/v1/me", {
         headers: {
@@ -96,7 +98,6 @@ function DatabaseAdd(props) {
         displayName = response.data.display_name;
       })
       .then(() => {
-        console.log("API request 2");
         let topSongs = axios
           .get("https://api.spotify.com/v1/me/top/tracks", {
             headers: {
@@ -131,7 +132,8 @@ function DatabaseAdd(props) {
           })
           .then(() => {
             // nvm totally doesnt work
-            console.log("Push to database");
+            console.log("second");
+            console.log("client side: " + props.token);
 
             axios.post("http://localhost:1234/api/newuser", {
               userId: userId,
@@ -143,15 +145,15 @@ function DatabaseAdd(props) {
             });
           })
           .catch((error) => {
-            console.log("DB talk failed: " + JSON.stringify(error.response));
+            console.log(error);
           });
       })
       .catch((error) => {
-        console.log("Spotify talk failed: " + JSON.stringify(error.response));
+        console.log(error);
       });
   }, [access_token]);
 
-  // return null since this doesn't render anything
+  // return null since this component doesn't render anything
   return null;
 }
 
