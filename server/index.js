@@ -23,6 +23,7 @@ app.get("/api/dbconnection", (req, res) => {
 
 app.post("/api/newuser", (req, res) => {
   // Check if the user already exists
+  console.log("talkin to database");
   let displayName = req.body.displayName;
   let userId = req.body.userId;
   let song1 = {};
@@ -75,7 +76,7 @@ app.post("/api/newuser", (req, res) => {
   );
 
   if (!userExists) {
-    console.log("inserting.....");
+    console.log("inserting..... " + displayName + " : " + userId);
     db.query(
       "INSERT INTO users (userId, displayName, song1, song2, song3, song4, song5) VALUES (?,?,?,?,?,?,?)",
       [
