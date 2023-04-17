@@ -71,12 +71,6 @@ function LoginRegister({ onLogin, onRegister }) {
 function DatabaseAdd(props) {
   console.log("calling db add");
   //token, display name, 5 song id, title, artist, album
-  /*const [userId, setUserId] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [ids, setIds] = useState([]);
-  const [titles, setTitles] = useState([]);
-  const [artist, setArtist] = useState([]);
-  const [album, setAlbum] = useState([]);*/
 
   let displayName = "";
   let userId = "";

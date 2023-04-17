@@ -92,7 +92,7 @@ app.post("/api/newuser", (req, res) => {
           console.log(err);
           res.sendStatus(500);
         } else {
-          console.log(`User with ID ${id} added to database`);
+          console.log(`User with ID ${userId} added to database`);
           res.sendStatus(201);
         }
       }
