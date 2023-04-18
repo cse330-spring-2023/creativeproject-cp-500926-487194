@@ -44,16 +44,20 @@ function NavBar() {
   );
 }
 
-function DisplayUserSongs(props) {
+function DisplayUserSongs({ userData }) {
   const [songIdArr, setSongIdArr] = useState([]);
 
   useEffect(() => {
-    axios.post("/api/getUser", { userId: props.userId }).then((response) => {
+    console.log("USER ID: " + userData.userId);
+    axios.post("http://localhost:1234/api/getUser", { userId: userData.userId }).then((response) => {
       setSongIdArr([...songIdArr, response.song1.songId]);
       setSongIdArr([...songIdArr, response.song2.songId]);
       setSongIdArr([...songIdArr, response.song3.songId]);
       setSongIdArr([...songIdArr, response.song4.songId]);
       setSongIdArr([...songIdArr, response.song5.songId]);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 
     //Chain axios spotify gets to make the album covers
@@ -100,11 +104,11 @@ function DisplayUserSongs(props) {
   );
 }
 
-function Profile() {
+function Profile({ userData }) {
   return (
     <>
       <br />
-      <DisplayUserSongs />
+      <DisplayUserSongs userData={userData} />
     </>
   );
 }
@@ -128,7 +132,7 @@ function Homepage({ userData }) {
     <div className="background">
       <h1> Hello {/* displayName of user */}!</h1>
       <NavBar />
-      <Profile />
+      <Profile userData={userData} />
       <Settings />
     </div>
   );

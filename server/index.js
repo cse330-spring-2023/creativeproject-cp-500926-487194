@@ -23,7 +23,7 @@ app.get("/api/dbconnection", (req, res) => {
 
 app.post("/api/getUser", (req, res) => {
   let userId = req.body.userId;
-
+  console.log("SERVERSIDE ID: " + userId);
   db.query("SELECT * FROM users WHERE userId = ?", [userId]).then(
     (err, result) => {
       if (err) {
