@@ -24,18 +24,15 @@ app.get("/api/dbconnection", (req, res) => {
 app.post("/api/getUser", (req, res) => {
   let userId = req.body.userId;
   console.log("SERVERSIDE ID: " + userId);
-  db.query("SELECT * FROM users WHERE userId = ?", [userId]).then(
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(500);
-      } else {
-        console.log("Successfully pulled database");
-        res.json(result);
-        res.sendStatus(200);
-      }
+  db.query("SELECT * FROM users WHERE userId = ?", [userId], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } else {
+      console.log("Successfully pulled database");
+      res.json(result);
     }
-  );
+  });
 });
 
 app.post("/api/getAllUsers", (req, res) => {
@@ -77,7 +74,8 @@ app.post("/api/newUser", (req, res) => {
     req.body.songId.length > 0 &&
     req.body.songTitle.length > 0 &&
     req.body.songArtist.length > 0 &&
-    req.body.songAlbum.length > 0
+    req.body.songAlbum.length > 0 &&
+    req.body.songCover.length > 0
   ) {
     for (let i = 0; i < 5; i++) {
       arr[i] = {
@@ -85,6 +83,7 @@ app.post("/api/newUser", (req, res) => {
         songTitle: req.body.songTitle[i],
         artist: req.body.songArtist[i],
         album: req.body.songAlbum[i],
+        cover: req.body.songCover[i],
       };
     }
   } else {
@@ -98,8 +97,13 @@ app.post("/api/newUser", (req, res) => {
     [userId],
     (err, result) => {
       if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      if (result.length == 0) {
         console.log(
-          `User with ID ${userId} doesnt exists, inserting information`
+          `User with ID ${userId} doesnt exist, inserting information`
         );
       } else {
         console.log("User does exist, updating info");

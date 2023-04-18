@@ -89,6 +89,7 @@ function DatabaseAdd(props) {
   let titles = [];
   let artist = [];
   let album = [];
+  let cover = [];
 
   const access_token = props.token;
 
@@ -126,21 +127,23 @@ function DatabaseAdd(props) {
             const tempTitles = [];
             const tempArtists = [];
             const tempAlbums = [];
+            const tempCover = [];
 
             for (let i = 0; i < 5; i++) {
               tempIds.push(response.data.items[i].id);
               tempTitles.push(response.data.items[i].name);
               tempArtists.push(response.data.items[i].artists[0].name);
               tempAlbums.push(response.data.items[i].album.name);
+              tempCover.push(response.data.items[i].album.images[1].url);
             }
             ids = tempIds;
             titles = tempTitles;
             artist = tempArtists;
             album = tempAlbums;
+            cover = tempCover;
           })
           .then(() => {
             // nvm totally doesnt work
-            console.log("second");
             console.log("client side: " + props.token);
 
             axios.post("http://localhost:1234/api/newUser", {
@@ -150,6 +153,7 @@ function DatabaseAdd(props) {
               songTitle: titles,
               songArtist: artist,
               songAlbum: album,
+              songCover: cover,
             });
             props.onFinishQuery(true);
           })
