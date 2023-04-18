@@ -44,7 +44,20 @@ function NavBar() {
   );
 }
 
-function DisplayUserSongs() {
+function DisplayUserSongs(props) {
+  const [songIdArr, setSongIdArr] = useState([]);
+
+  useEffect(() => {
+    axios.post("/api/getUser", { userId: props.userId }).then((response) => {
+      setSongIdArr([...songIdArr, response.song1.songId]);
+      setSongIdArr([...songIdArr, response.song2.songId]);
+      setSongIdArr([...songIdArr, response.song3.songId]);
+      setSongIdArr([...songIdArr, response.song4.songId]);
+      setSongIdArr([...songIdArr, response.song5.songId]);
+    });
+
+    //Chain axios spotify gets to make the album covers
+  });
   return (
     <>
       <motion.div id="song1" className="songBox">
@@ -103,8 +116,8 @@ function Leaderboard() {}
 function Settings() {}
 
 function Homepage({ userData }) {
-  const [userList, setUserList] = useState([]);
-
+  const [userId, setUserId] = useState(userData.userId);
+  const [token, setToken] = useState(userData.token);
   useEffect(() => {
     /*axios.get("http://localhost:1234/api/get").then((data) => {
       setUserList(data.data);

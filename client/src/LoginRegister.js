@@ -12,6 +12,8 @@ function LoginRegister({ onLogin, onRegister }) {
   const SCOPE = "user-top-read";
 
   const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("");
+  const [finished, setFinished] = useState(false);
   const [isLogged, setisLogged] = useState(false);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ function LoginRegister({ onLogin, onRegister }) {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
     let display_name = window.localStorage.getItem("display_name");
-    if (hash && Date.now() - localStorage.getItem("timeToken") > 3599) {
+    if (hash && Date.now() - localStorage.getItem("timeToken") < 3599) {
       token = hash
         .substring(1)
         .split("&")
@@ -56,8 +58,17 @@ function LoginRegister({ onLogin, onRegister }) {
     <>
       {isLogged ? (
         <>
-          <Homepage userData={{ id: token }} />
-          <DatabaseAdd token={token} auth={CLIENT_ID} />
+          <DatabaseAdd
+            token={token}
+            auth={CLIENT_ID}
+            onUserIdUpdate={setUserId}
+            onFinishQuery={setFinished}
+          />
+          {finished ? (
+            <Homepage userData={{ token: token, userId: userId }} />
+          ) : (
+            <></>
+          )}
         </>
       ) : (
         <>
@@ -96,6 +107,7 @@ function DatabaseAdd(props) {
         //setUserId(response.data.id);
         userId = response.data.id;
         displayName = response.data.display_name;
+        props.onUserIdUpdate(userId);
       })
       .then(() => {
         let topSongs = axios
@@ -121,10 +133,6 @@ function DatabaseAdd(props) {
               tempArtists.push(response.data.items[i].artists[0].name);
               tempAlbums.push(response.data.items[i].album.name);
             }
-            //setIds(ids);
-            //setTitles(titles);
-            //setArtist(artists);
-            //setAlbum(albums);
             ids = tempIds;
             titles = tempTitles;
             artist = tempArtists;
@@ -135,7 +143,7 @@ function DatabaseAdd(props) {
             console.log("second");
             console.log("client side: " + props.token);
 
-            axios.post("http://localhost:1234/api/newuser", {
+            axios.post("http://localhost:1234/api/newUser", {
               userId: userId,
               displayName: displayName,
               songId: ids,
@@ -143,6 +151,7 @@ function DatabaseAdd(props) {
               songArtist: artist,
               songAlbum: album,
             });
+            props.onFinishQuery(true);
           })
           .catch((error) => {
             console.log(error);

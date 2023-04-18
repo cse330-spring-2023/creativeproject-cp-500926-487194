@@ -21,7 +21,42 @@ app.get("/api/dbconnection", (req, res) => {
     })
 });*/
 
-app.post("/api/newuser", (req, res) => {
+app.post("/api/getUser", (req, res) => {
+  let userId = req.body.userId;
+
+  db.query("SELECT * FROM users WHERE userId = ?", [userId]).then(
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      } else {
+        console.log("Successfully pulled database");
+        res.json(result);
+        res.sendStatus(200);
+      }
+    }
+  );
+});
+
+app.post("/api/getAllUsers", (req, res) => {
+  let userId = req.body.userId;
+  db.query("SELECT * FROM users WHERE").then((err, result) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } else {
+      console.log("Successfully pulled database");
+      res.json(result);
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.post("/api/getUserMostUpvotes", (req, res) => {});
+
+app.post("/api/getUpvotesOfUser", (req, res) => {});
+
+app.post("/api/newUser", (req, res) => {
   // Check if the user already exists
   let displayName = req.body.displayName;
   let userId = req.body.userId;
