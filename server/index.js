@@ -36,15 +36,13 @@ app.post("/api/getUser", (req, res) => {
 });
 
 app.post("/api/getAllUsers", (req, res) => {
-  let userId = req.body.userId;
-  db.query("SELECT * FROM users WHERE").then((err, result) => {
+  db.query("SELECT * FROM users", (err, result) => {
     if (err) {
       console.log(err);
       res.sendStatus(500);
     } else {
       console.log("Successfully pulled database");
       res.json(result);
-      res.sendStatus(200);
     }
   });
 });
