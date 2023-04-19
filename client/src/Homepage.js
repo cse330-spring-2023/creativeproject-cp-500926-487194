@@ -61,7 +61,9 @@ function DisplayUserSongs(props) {
       <motion.div id="song5" className="songBox">
         <img src={props.songCover[4]} alt="album cover" className="song" />
       </motion.div>
-      <motion.div id="votes" />
+      <motion.div id="votes" className="heartBox">
+        <img src="" alt="heart" className="heartSize" />
+      </motion.div>
     </>
   );
 }

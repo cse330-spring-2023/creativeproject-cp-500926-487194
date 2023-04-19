@@ -47,9 +47,78 @@ app.post("/api/getAllUsers", (req, res) => {
   });
 });
 
-app.post("/api/getUserMostUpvotes", (req, res) => {});
+app.post("/api/getUserMostUpvotes", (req, res) => {
+  db.query(
+    "SELECT userTasteId FROM upvotes GROUP BY userTasteId ORDER BY COUNT(*) DESC LIMIT 3"
+  ).then((err, result) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } else {
+      console.log(result);
+      res.send(result);
+    }
+  });
+});
 
-app.post("/api/getUpvotesOfUser", (req, res) => {});
+app.post("/api/upvoteAndDownvote", (req, res) => {
+  let userId = req.body.userId;
+  let postId = req.body.postId;
+  let upvoted = false;
+
+  db.query(
+    "SELECT COUNT(*) FROM upvotes WHERE userTasteId = ? AND userUpvoteId = ?",
+    [postId, userId]
+  )
+    .then((err, result) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      }
+      if (result > 0) {
+        upvoted = true;
+      } else {
+        upvoted = false;
+      }
+    })
+    .then(() => {
+      let query = "";
+      if (upvoted) {
+        query = "INSERT INTO upvotes (userTasteId, userUpvoteId) VALUES (?, ?)";
+      } else {
+        query =
+          "DELETE FROM upvotes WHERE userTasteId = ? AND userUpvoteId = ?";
+      }
+      db.query(query, [postId, userId]).then((err, result) => {
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        } else {
+          console.log(result);
+          res.sendStatus(201);
+        }
+      });
+    });
+});
+
+app.post("/api/getIfUpvoted", (req, res) => {
+  let userId = req.body.userId;
+  let postId = req.body.postId;
+  db.query(
+    "SELECT COUNT(*) FROM upvotes WHERE userTasteId = ? AND userUpvoteId = ?",
+    [postId, userId]
+  ).then((err, result) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+    if (result > 0) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  });
+});
 
 app.post("/api/newUser", (req, res) => {
   // Check if the user already exists
