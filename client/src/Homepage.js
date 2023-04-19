@@ -33,8 +33,7 @@ function ExplorePage() {
       {users.map((user, index) => (
         <>
       <div key={index}>
-        {user.displayName} ({user.userId})
-        <Profile userId={user.userId} />
+        <Profile userId={user.userId} displayName={user.displayName} />
       </div>
         </>
 
@@ -45,7 +44,9 @@ function ExplorePage() {
 function DisplayUserSongs(props) {
   console.log(props);
   return (
-    <>
+    <div className="userCard">
+      {props.displayName}
+      <br></br>
       <motion.div id="song1" className="songBox">
         <img src={props.songCover[0]} alt="album cover" className="song" />
       </motion.div>
@@ -64,7 +65,7 @@ function DisplayUserSongs(props) {
       <motion.div id="votes" className="heartBox">
         <img src="" alt="heart" className="heartSize" />
       </motion.div>
-    </>
+    </div>
   );
 }
 
@@ -94,7 +95,7 @@ function Profile(props) {
   return (
     <>
       <br />
-      {haveCovers ? <DisplayUserSongs songCover={songCovers} /> : <></>}
+      {haveCovers ? <DisplayUserSongs songCover={songCovers} displayName={props.displayName} /> : <></>}
     </>
   );
 }
@@ -124,8 +125,7 @@ const goToProfile = () => {
 
 
   return (
-    <>
-        <div className="background">
+      <>
           <h1> Hello {userData.displayName}!</h1>
 
 
@@ -171,9 +171,10 @@ const goToProfile = () => {
 
           
           <Settings />
-        </div>
         {homePage ? (
-          <Profile userId={userData.userId} />
+          <>
+            <Profile userId={userData.userId} displayName={userData.displayName} />
+          </>
           ) : 
       
       <ExplorePage />

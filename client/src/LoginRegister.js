@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Homepage from "./Homepage";
 import axios from "axios";
+import "./styles.css";
+
 
 // Spotify token authentication from: https://dev.to/dom_the_dev/how-to-use-the-spotify-api-in-your-react-js-app-50pn
 
@@ -56,7 +58,7 @@ function LoginRegister({ onLogin, onRegister }) {
   };
 
   return (
-    <>
+    <div className="penis">
       {isLogged ? (
         <>
           <DatabaseAdd
@@ -77,7 +79,7 @@ function LoginRegister({ onLogin, onRegister }) {
           <button onClick={spotifyLogin}>login to spotify</button>
         </>
       )}
-    </>
+    </div>
   );
 }
 

@@ -1,4 +1,3 @@
-import './App.css';
 import React, { useState } from "react";
 import LoginRegister from './LoginRegister'
 import Homepage from './Homepage'
@@ -30,7 +29,7 @@ const toRegister = () => {
 
 
   return (
-    <>
+    <div class="background">
 {
 loggedIn ? (
         <Homepage userData={loginData}/>
@@ -39,7 +38,7 @@ loggedIn ? (
       ) : (
         <LoginRegister onLogin={handleLogin} onRegister={toRegister} />
       )}
-    </>
+    </div>
     
   );
 }
