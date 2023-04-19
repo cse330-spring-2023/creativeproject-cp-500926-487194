@@ -137,13 +137,14 @@ app.post("/api/newUser", (req, res) => {
       } else if (result.length > 0) {
         console.log("updating user info");
         db.query(
-          "UPDATE users SET song1 = ?, song2 = ?, song3 = ?, song4 = ?, song5 = ?",
+          "UPDATE users SET song1 = ?, song2 = ?, song3 = ?, song4 = ?, song5 = ? WHERE userId = ?",
           [
             JSON.stringify(arr[0]),
             JSON.stringify(arr[1]),
             JSON.stringify(arr[2]),
             JSON.stringify(arr[3]),
             JSON.stringify(arr[4]),
+            userId,
           ],
           (err, result) => {
             if (err) {
