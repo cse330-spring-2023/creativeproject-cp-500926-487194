@@ -13,6 +13,7 @@ function LoginRegister({ onLogin, onRegister }) {
 
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [finished, setFinished] = useState(false);
   const [isLogged, setisLogged] = useState(false);
 
@@ -62,10 +63,11 @@ function LoginRegister({ onLogin, onRegister }) {
             token={token}
             auth={CLIENT_ID}
             onUserIdUpdate={setUserId}
+            onDisplayNameUpdate={setDisplayName}
             onFinishQuery={setFinished}
           />
           {finished ? (
-            <Homepage userData={{ token: token, userId: userId }} />
+            <Homepage userData={{ token: token, userId: userId, displayName: displayName}} />
           ) : (
             <></>
           )}
@@ -109,6 +111,7 @@ function DatabaseAdd(props) {
         userId = response.data.id;
         displayName = response.data.display_name;
         props.onUserIdUpdate(userId);
+        props.onDisplayNameUpdate(displayName);
       })
       .then(() => {
         let topSongs = axios

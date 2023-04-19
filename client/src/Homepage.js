@@ -4,45 +4,43 @@ import { useHistory } from "react-router-dom";
 import "./styles.css";
 import { motion } from "framer-motion";
 
-function NavBar() {
+function ExplorePage() {
+  const [users, setUsers] = useState([]);
+
+
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:1234/api/getAllUsers")
+      .then((response) => {
+          console.log(response.data);
+          const users = response.data.map(user => ({
+            displayName: user.displayName,
+            userId: user.userId
+          }));
+          setUsers(users);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  console.log("***USERS:***");
+  console.log(users);
+
   return (
     <>
-      <motion.div
-        whileHover={{
-          scale: 1.1,
-          backgroundColor: "#66dd67",
-        }}
-        whileTap={{ scale: 0.9 }}
-        id="userProfile"
-        className="navButton"
-      >
-        <p className="text">Profile</p>
-      </motion.div>
-      <motion.div
-        whileHover={{
-          scale: 1.1,
-          backgroundColor: "#66dd67",
-        }}
-        whileTap={{ scale: 0.9 }}
-        id="explore"
-        className="navButton"
-      >
-        <p className="text">Explore</p>
-      </motion.div>
-      <motion.div
-        whileHover={{
-          scale: 1.1,
-          backgroundColor: "#66dd67",
-        }}
-        whileTap={{ scale: 0.9 }}
-        id="leaderboard"
-        className="navButton"
-      >
-        <p className="text">Leaderboard</p>
-      </motion.div>
-    </>
-  );
-}
+      {users.map((user, index) => (
+        <>
+      <div key={index}>
+        {user.displayName} ({user.userId})
+        <Profile userId={user.userId} />
+      </div>
+        </>
+
+      ))}
+      </>
+  );}
 
 function DisplayUserSongs(props) {
   console.log(props);
@@ -106,21 +104,80 @@ function Leaderboard() {}
 function Settings() {}
 
 function Homepage({ userData }) {
-  const [userId, setUserId] = useState(userData.userId);
   const [token, setToken] = useState(userData.token);
-  useEffect(() => {
-    /*axios.get("http://localhost:1234/api/get").then((data) => {
-      setUserList(data.data);
-    });*/
-  }, []);
+  const [homePage, setHomePage] = useState(true);
+
+  
+
+
+
+
+const goToExplore = () => {
+    setHomePage(false);
+}
+const goToProfile = () => {
+  setHomePage(true);
+}
+
+
 
   return (
-    <div className="background">
-      <h1> Hello {/* displayName of user */}!</h1>
-      <NavBar />
-      <Profile userId={userId} />
-      <Settings />
-    </div>
+    <>
+        <div className="background">
+          <h1> Hello {userData.displayName}!</h1>
+
+
+
+          <motion.div
+          whileHover={{
+            scale: 1.1,
+            backgroundColor: "#66dd67",
+          }}
+          whileTap={{ scale: 0.9 }}
+          id="userProfile"
+          className="navButton"
+          onClick={goToProfile}
+        >
+          <p className="text">Profile</p>
+        </motion.div>
+        <motion.div
+          whileHover={{
+            scale: 1.1,
+            backgroundColor: "#66dd67",
+          }}
+          whileTap={{ scale: 0.9 }}
+          id="explore"
+          className="navButton"
+          onClick={goToExplore}
+        >
+          <p className="text">Explore</p>
+        </motion.div>
+        <motion.div
+          whileHover={{
+            scale: 1.1,
+            backgroundColor: "#66dd67",
+          }}
+          whileTap={{ scale: 0.9 }}
+          id="leaderboard"
+          className="navButton"
+        >
+          <p className="text">Leaderboard</p>
+        </motion.div>
+
+
+
+
+          
+          <Settings />
+        </div>
+        {homePage ? (
+          <Profile userId={userData.userId} />
+          ) : 
+      
+      <ExplorePage />
+
+      }
+    </>
   );
 }
 
