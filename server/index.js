@@ -49,75 +49,84 @@ app.post("/api/getAllUsers", (req, res) => {
 
 app.post("/api/getUserMostUpvotes", (req, res) => {
   db.query(
-    "SELECT userTasteId FROM upvotes GROUP BY userTasteId ORDER BY COUNT(*) DESC LIMIT 3"
-  ).then((err, result) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(500);
-    } else {
-      console.log(result);
-      res.send(result);
+    "SELECT userTasteId FROM upvotes GROUP BY userTasteId ORDER BY COUNT(*) DESC LIMIT 3",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      } else {
+        console.log(result);
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 app.post("/api/upvoteAndDownvote", (req, res) => {
+  console.log("updating upvotes");
   let userId = req.body.userId;
   let postId = req.body.postId;
   let upvoted = false;
 
+  console.log(req.body);
+
   db.query(
     "SELECT COUNT(*) FROM upvotes WHERE userTasteId = ? AND userUpvoteId = ?",
-    [postId, userId]
-  )
-    .then((err, result) => {
+    [postId, userId],
+    (err, result) => {
       if (err) {
         console.log(err);
         res.sendStatus(500);
       }
-      if (result > 0) {
-        upvoted = true;
-      } else {
+      if (result[0]["COUNT(*)"] > 0) {
         upvoted = false;
+      } else {
+        upvoted = true;
       }
-    })
-    .then(() => {
+
       let query = "";
       if (upvoted) {
+        console.log("adding upvote");
         query = "INSERT INTO upvotes (userTasteId, userUpvoteId) VALUES (?, ?)";
       } else {
+        console.log("deleting upvote");
         query =
           "DELETE FROM upvotes WHERE userTasteId = ? AND userUpvoteId = ?";
       }
-      db.query(query, [postId, userId]).then((err, result) => {
+      db.query(query, [postId, userId], (err, result) => {
         if (err) {
           console.log(err);
+          res.send(upvoted);
           res.sendStatus(500);
         } else {
           console.log(result);
+          res.send(upvoted);
           res.sendStatus(201);
         }
       });
-    });
+    }
+  );
 });
 
 app.post("/api/getIfUpvoted", (req, res) => {
+  console.log("checking if updated");
   let userId = req.body.userId;
   let postId = req.body.postId;
   db.query(
     "SELECT COUNT(*) FROM upvotes WHERE userTasteId = ? AND userUpvoteId = ?",
-    [postId, userId]
-  ).then((err, result) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(500);
+    [postId, userId],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      }
+      if (result[0]["COUNT(*)"] > 0) {
+        res.send(true);
+      } else {
+        res.send(false);
+      }
     }
-    if (result > 0) {
-      res.send(true);
-    } else {
-      res.send(false);
-    }
-  });
+  );
 });
 
 app.post("/api/newUser", (req, res) => {

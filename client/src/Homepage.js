@@ -4,21 +4,19 @@ import { useHistory } from "react-router-dom";
 import "./styles.css";
 import { motion } from "framer-motion";
 
-function ExplorePage() {
+function ExplorePage(props) {
   const [users, setUsers] = useState([]);
-
-
 
   useEffect(() => {
     axios
       .post("http://localhost:1234/api/getAllUsers")
       .then((response) => {
-          console.log(response.data);
-          const users = response.data.map(user => ({
-            displayName: user.displayName,
-            userId: user.userId
-          }));
-          setUsers(users);
+        console.log(response.data);
+        const users = response.data.map((user) => ({
+          displayName: user.displayName,
+          userId: user.userId,
+        }));
+        setUsers(users);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -32,17 +30,47 @@ function ExplorePage() {
     <>
       {users.map((user, index) => (
         <>
-      <div key={index}>
-        <Profile userId={user.userId} displayName={user.displayName} />
-      </div>
+          <div key={index}>
+            {user.displayName} ({user.userId})
+            <Profile userId={user.userId} upvoteId={props.upvoteId} />
+          </div>
         </>
-
       ))}
-      </>
-  );}
+    </>
+  );
+}
 
 function DisplayUserSongs(props) {
-  console.log(props);
+  const [isUpvoted, setIsUpvoted] = useState(false);
+  useEffect(() => {
+    axios
+      .post("http://localhost:1234/api/getIfUpvoted", {
+        userId: props.upvoteId,
+        postId: props.userId,
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.data) {
+          setIsUpvoted(true);
+        } else {
+          setIsUpvoted(false);
+        }
+      });
+  });
+
+  const handleUpvotePressed = () => {
+    console.log("changing upvote status");
+    console.log(props.upvoteId);
+    axios
+      .post("http://localhost:1234/api/upvoteAndDownvote", {
+        userId: props.upvoteId,
+        postId: props.userId,
+      })
+      .then((result) => {
+        setIsUpvoted(result);
+      });
+  };
+
   return (
     <div className="userCard">
       {props.displayName}
@@ -63,7 +91,16 @@ function DisplayUserSongs(props) {
         <img src={props.songCover[4]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="votes" className="heartBox">
-        <img src="" alt="heart" className="heartSize" />
+        {isUpvoted ? (
+          <img src="/evan.jpg" alt="evan" onClick={handleUpvotePressed} />
+        ) : (
+          <img
+            src="/heart-64.svg"
+            alt="heart"
+            className="heartSize"
+            onClick={handleUpvotePressed}
+          />
+        )}
       </motion.div>
     </div>
   );
@@ -95,7 +132,16 @@ function Profile(props) {
   return (
     <>
       <br />
-      {haveCovers ? <DisplayUserSongs songCover={songCovers} displayName={props.displayName} /> : <></>}
+      {haveCovers ? (
+        <DisplayUserSongs
+          songCover={songCovers}
+          displayName={props.displayName}
+          userId={props.userId}
+          upvoteId={props.upvoteId}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 }
@@ -110,27 +156,19 @@ function Homepage({ userData }) {
   const [token, setToken] = useState(userData.token);
   const [homePage, setHomePage] = useState(true);
 
-  
-
-
-
-
-const goToExplore = () => {
+  const goToExplore = () => {
     setHomePage(false);
-}
-const goToProfile = () => {
-  setHomePage(true);
-}
-
-
+  };
+  const goToProfile = () => {
+    setHomePage(true);
+  };
 
   return (
-      <>
-          <h1> Hello {userData.displayName}!</h1>
+    <>
+      <div className="background">
+        <h1> Hello {userData.displayName}!</h1>
 
-
-
-          <motion.div
+        <motion.div
           whileHover={{
             scale: 1.1,
             backgroundColor: "#66dd67",
@@ -166,20 +204,13 @@ const goToProfile = () => {
           <p className="text">Leaderboard</p>
         </motion.div>
 
-
-
-
-          
-          <Settings />
+        <Settings />
         {homePage ? (
-          <>
-            <Profile userId={userData.userId} displayName={userData.displayName} />
-          </>
-          ) : 
-      
-      <ExplorePage />
-
-      }
+          <Profile userId={userData.userId} upvoteId={userData.userId} />
+        ) : (
+          <ExplorePage upvoteId={userData.userId} />
+        )}
+      </div>
     </>
   );
 }

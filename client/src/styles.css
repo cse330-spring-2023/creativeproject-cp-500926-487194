@@ -62,4 +62,6 @@ h1 {
 .heartSize{
     width: 31px;
     height: 31px;
+    filter: invert(72%) sepia(23%) saturate(6252%) hue-rotate(339deg) brightness(99%) contrast(90%);
+    fill: #ef8733;
 }
