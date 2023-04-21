@@ -30,8 +30,9 @@ function ExplorePage(props) {
     <>
       {users.map((user, index) => (
         <>
+        <br></br>
           <div key={index}>
-            {user.displayName} ({user.userId})
+            <div class="exploreText">{user.displayName} </div>
             <Profile userId={user.userId} upvoteId={props.upvoteId} />
           </div>
         </>

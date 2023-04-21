@@ -11,7 +11,7 @@
 .background{
     margin: auto;
     width: auto;
-    height: 100vh;
+    height: 110vh;
     background-color: #22282fff;
 }
 
@@ -26,7 +26,7 @@ h1 {
 
 .exploreText{
     color: #fafafaff;
-    margin-left: 5vh;
+    margin-left: 4.9vh;
 }
 
 .userCard{
