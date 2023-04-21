@@ -90,14 +90,24 @@ function DisplayUserSongs(props) {
       <motion.div id="song5" className="songBox">
         <img src={props.songCover[4]} alt="album cover" className="song" />
       </motion.div>
-      <motion.div id="votes" className="heartBox">
+      <motion.div
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.8 }}
+        id="votes"
+        className="heartBox"
+      >
         {isUpvoted ? (
-          <img src="/evan.jpg" alt="evan" onClick={handleUpvotePressed} />
+          <img
+            src="/heartfilled_64.svg"
+            alt="evan"
+            className="heartSizeFull"
+            onClick={handleUpvotePressed}
+          />
         ) : (
           <img
             src="/heart-64.svg"
             alt="heart"
-            className="heartSize"
+            className="heartSizeEmpty"
             onClick={handleUpvotePressed}
           />
         )}

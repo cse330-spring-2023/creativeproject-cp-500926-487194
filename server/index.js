@@ -101,7 +101,6 @@ app.post("/api/upvoteAndDownvote", (req, res) => {
         } else {
           console.log(result);
           res.send(upvoted);
-          res.sendStatus(201);
         }
       });
     }
