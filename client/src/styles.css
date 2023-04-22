@@ -54,6 +54,7 @@ h1 {
     border-style: solid;
     object-fit: cover;
     cursor: pointer;
+    position: relative;
 }
 
 .song{
@@ -78,4 +79,12 @@ h1 {
 
 .textHover{
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity:0;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    height:100%;
+    width:100%;
 }

@@ -31,10 +31,14 @@ function ExplorePage(props) {
     <>
       {users.map((user, index) => (
         <>
-        <br></br>
+          <br></br>
           <div key={index}>
             <div class="exploreText">{user.displayName}</div>
-            <Profile userId={user.userId} upvoteId={props.upvoteId} upvoteCount={user.upvoteCount}/>
+            <Profile
+              userId={user.userId}
+              upvoteId={props.upvoteId}
+              upvoteCount={user.upvoteCount}
+            />
           </div>
         </>
       ))}
@@ -72,10 +76,9 @@ function DisplayUserSongs(props) {
       })
       .then((result) => {
         setIsUpvoted(result);
-        if(isUpvoted) {
+        if (isUpvoted) {
           setVoteCount(voteCount - 1);
-        }
-        else {
+        } else {
           setVoteCount(voteCount + 1);
         }
       });
@@ -86,18 +89,33 @@ function DisplayUserSongs(props) {
       {props.displayName}
       <br></br>
       <motion.div id="song1" className="songBox">
+        <motion.div whileHover={{ opacity: 1 }} class="textHover">
+          hello
+        </motion.div>
         <img src={props.songCover[0]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song2" className="songBox">
+        <motion.div whileHover={{ opacity: 1 }} class="textHover">
+          hello
+        </motion.div>
         <img src={props.songCover[1]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song3" className="songBox">
+        <motion.div whileHover={{ opacity: 1 }} class="textHover">
+          hello
+        </motion.div>
         <img src={props.songCover[2]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song4" className="songBox">
+        <motion.div whileHover={{ opacity: 1 }} class="textHover">
+          hello
+        </motion.div>
         <img src={props.songCover[3]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song5" className="songBox">
+        <motion.div whileHover={{ opacity: 1 }} class="textHover">
+          hello
+        </motion.div>
         <img src={props.songCover[4]} alt="album cover" className="song" />
       </motion.div>
       <motion.div
@@ -106,7 +124,7 @@ function DisplayUserSongs(props) {
         id="votes"
         className="heartBox"
       >
-      <div class="upVoteCount"> {voteCount} </div>
+        <div class="upVoteCount"> {voteCount} </div>
         {isUpvoted ? (
           <img
             src="/heartfilled_64.svg"
@@ -167,8 +185,6 @@ function Profile(props) {
     </>
   );
 }
-
-function Explore() {}
 
 function Leaderboard() {}
 
