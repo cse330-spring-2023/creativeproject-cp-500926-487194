@@ -11,12 +11,17 @@
 .background{
     margin: auto;
     width: auto;
-    height: 110vh;
+    height: 120vh;
     background-color: #22282fff;
 }
 
 .text{
     color: #fafafaff;
+}
+
+.upVoteCount {
+    color: #fafafaff;
+    margin-left: 1.2vh;
 }
 
 h1 {

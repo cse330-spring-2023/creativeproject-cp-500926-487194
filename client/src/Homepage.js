@@ -9,12 +9,13 @@ function ExplorePage(props) {
 
   useEffect(() => {
     axios
-      .post("http://localhost:1234/api/getAllUsers")
+      .post("http://localhost:1234/api/getUsersSortedByUpvotes")
       .then((response) => {
         console.log(response.data);
         const users = response.data.map((user) => ({
           displayName: user.displayName,
           userId: user.userId,
+          upvoteCount: user.upvoteCount,
         }));
         setUsers(users);
       })
@@ -32,8 +33,8 @@ function ExplorePage(props) {
         <>
         <br></br>
           <div key={index}>
-            <div class="exploreText">{user.displayName} </div>
-            <Profile userId={user.userId} upvoteId={props.upvoteId} />
+            <div class="exploreText">{user.displayName}</div>
+            <Profile userId={user.userId} upvoteId={props.upvoteId} upvoteCount={user.upvoteCount}/>
           </div>
         </>
       ))}
@@ -43,6 +44,8 @@ function ExplorePage(props) {
 
 function DisplayUserSongs(props) {
   const [isUpvoted, setIsUpvoted] = useState(false);
+  const [voteCount, setVoteCount] = useState(props.upvoteCount);
+
   useEffect(() => {
     axios
       .post("http://localhost:1234/api/getIfUpvoted", {
@@ -69,6 +72,12 @@ function DisplayUserSongs(props) {
       })
       .then((result) => {
         setIsUpvoted(result);
+        if(isUpvoted) {
+          setVoteCount(voteCount - 1);
+        }
+        else {
+          setVoteCount(voteCount + 1);
+        }
       });
   };
 
@@ -97,6 +106,7 @@ function DisplayUserSongs(props) {
         id="votes"
         className="heartBox"
       >
+      <div class="upVoteCount"> {voteCount} </div>
         {isUpvoted ? (
           <img
             src="/heartfilled_64.svg"
@@ -149,6 +159,7 @@ function Profile(props) {
           displayName={props.displayName}
           userId={props.userId}
           upvoteId={props.upvoteId}
+          upvoteCount={props.upvoteCount}
         />
       ) : (
         <></>
