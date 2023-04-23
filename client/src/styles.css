@@ -5,13 +5,14 @@
     border-radius: 5%;
     text-align: center;
     margin:50px;
-    width:175px;
+    width:165px;
 }
 
 .background{
     margin: auto;
     width: auto;
-    height: 120vh;
+    min-height: 100vh;
+    height: 100%;
     background-color: #22282fff;
 }
 
@@ -87,4 +88,15 @@ h1 {
     text-align: center;
     height:100%;
     width:100%;
+    overflow:scroll;
+}
+
+.logOutButton{
+    display: inline-block;
+    border-style: solid;
+    border-color: #66dd67;
+    border-radius: 5%;
+    text-align: center;
+    margin:0px;
+    width:65px;
 }

@@ -3,7 +3,6 @@ import Homepage from "./Homepage";
 import axios from "axios";
 import "./styles.css";
 
-
 // Spotify token authentication from: https://dev.to/dom_the_dev/how-to-use-the-spotify-api-in-your-react-js-app-50pn
 
 function LoginRegister({ onLogin, onRegister }) {
@@ -24,6 +23,7 @@ function LoginRegister({ onLogin, onRegister }) {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
     let display_name = window.localStorage.getItem("display_name");
+    console.log(hash);
     if (hash && Date.now() - localStorage.getItem("timeToken") < 3599) {
       token = hash
         .substring(1)
@@ -53,7 +53,7 @@ function LoginRegister({ onLogin, onRegister }) {
   }, []);
 
   const spotifyLogin = () => {
-    window.location = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+    window.location = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&show_dialog=${true}`;
     localStorage.setItem("timeToken", Date.now());
   };
 
@@ -69,7 +69,13 @@ function LoginRegister({ onLogin, onRegister }) {
             onFinishQuery={setFinished}
           />
           {finished ? (
-            <Homepage userData={{ token: token, userId: userId, displayName: displayName}} />
+            <Homepage
+              userData={{
+                token: token,
+                userId: userId,
+                displayName: displayName,
+              }}
+            />
           ) : (
             <></>
           )}

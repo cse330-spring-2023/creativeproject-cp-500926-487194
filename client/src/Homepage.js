@@ -90,32 +90,72 @@ function DisplayUserSongs(props) {
       {props.displayName}
       <br></br>
       <motion.div id="song1" className="songBox">
-        <motion.div whileHover={{ opacity: 1 }} class="textHover">
-          hello
+        <motion.div
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          class="textHover"
+        >
+          <b>{props.songName[0]}</b>
+          <br />
+          {props.songArtist[0]}
+          <br />
+          {props.songAlbum[0]}
         </motion.div>
         <img src={props.songCover[0]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song2" className="songBox">
-        <motion.div whileHover={{ opacity: 1 }} class="textHover">
-          hello
+        <motion.div
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          class="textHover"
+        >
+          <b>{props.songName[1]}</b>
+          <br />
+          {props.songArtist[1]}
+          <br />
+          {props.songAlbum[1]}
         </motion.div>
         <img src={props.songCover[1]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song3" className="songBox">
-        <motion.div whileHover={{ opacity: 1 }} class="textHover">
-          hello
+        <motion.div
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          class="textHover"
+        >
+          <b>{props.songName[2]}</b>
+          <br />
+          {props.songArtist[2]}
+          <br />
+          {props.songAlbum[2]}
         </motion.div>
         <img src={props.songCover[2]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song4" className="songBox">
-        <motion.div whileHover={{ opacity: 1 }} class="textHover">
-          hello
+        <motion.div
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          class="textHover"
+        >
+          <b>{props.songName[3]}</b>
+          <br />
+          {props.songArtist[3]}
+          <br />
+          {props.songAlbum[3]}
         </motion.div>
         <img src={props.songCover[3]} alt="album cover" className="song" />
       </motion.div>
       <motion.div id="song5" className="songBox">
-        <motion.div whileHover={{ opacity: 1 }} class="textHover">
-          hello
+        <motion.div
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          class="textHover"
+        >
+          <b>{props.songName[4]}</b>
+          <br />
+          {props.songArtist[4]}
+          <br />
+          {props.songAlbum[4]}
         </motion.div>
         <img src={props.songCover[4]} alt="album cover" className="song" />
       </motion.div>
@@ -155,6 +195,9 @@ function DisplayUserSongs(props) {
 
 function Profile(props) {
   const [songCovers, setSongCovers] = useState([]);
+  const [songName, setSongName] = useState([]);
+  const [songArtist, setSongArtist] = useState([]);
+  const [songAlbum, setSongAlbum] = useState([]);
   const [haveCovers, setHaveCovers] = useState(false);
 
   useEffect(() => {
@@ -170,6 +213,27 @@ function Profile(props) {
           response.data[0].song4.cover,
           response.data[0].song5.cover,
         ]);
+        setSongName([
+          response.data[0].song1.songTitle,
+          response.data[0].song2.songTitle,
+          response.data[0].song3.songTitle,
+          response.data[0].song4.songTitle,
+          response.data[0].song5.songTitle,
+        ]);
+        setSongArtist([
+          response.data[0].song1.artist,
+          response.data[0].song2.artist,
+          response.data[0].song3.artist,
+          response.data[0].song4.artist,
+          response.data[0].song5.artist,
+        ]);
+        setSongAlbum([
+          response.data[0].song1.album,
+          response.data[0].song2.album,
+          response.data[0].song3.album,
+          response.data[0].song4.album,
+          response.data[0].song5.album,
+        ]);
         setHaveCovers(true);
       })
       .catch((error) => {
@@ -182,6 +246,9 @@ function Profile(props) {
       {haveCovers ? (
         <DisplayUserSongs
           songCover={songCovers}
+          songName={songName}
+          songArtist={songArtist}
+          songAlbum={songAlbum}
           displayName={props.displayName}
           userId={props.userId}
           upvoteId={props.upvoteId}
@@ -197,8 +264,6 @@ function Profile(props) {
 
 function Leaderboard() {}
 
-function Settings() {}
-
 function Homepage({ userData }) {
   const [token, setToken] = useState(userData.token);
   const [homePage, setHomePage] = useState(true);
@@ -209,11 +274,14 @@ function Homepage({ userData }) {
   const goToProfile = () => {
     setHomePage(true);
   };
+  const logOut = () => {
+    window.location.reload(true);
+  };
 
   return (
     <>
       <div className="background">
-        <h1> Hello {userData.displayName}!</h1>
+        <h1>Hello {userData.displayName}!</h1>
 
         <motion.div
           whileHover={{
@@ -250,8 +318,18 @@ function Homepage({ userData }) {
         >
           <p className="text">Leaderboard</p>
         </motion.div>
+        <motion.div
+          whileHover={{
+            scale: 1.1,
+            backgroundColor: "#66dd67",
+          }}
+          whileTap={{ scale: 0.9 }}
+          className="logOutButton"
+          onClick={logOut}
+        >
+          <p className="text">Log-out</p>
+        </motion.div>
 
-        <Settings />
         {homePage ? (
           <Profile userId={userData.userId} upvoteId={userData.userId} isExplorePage={false} />
         ) : (
