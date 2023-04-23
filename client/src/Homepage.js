@@ -38,6 +38,7 @@ function ExplorePage(props) {
               userId={user.userId}
               upvoteId={props.upvoteId}
               upvoteCount={user.upvoteCount}
+              isExplorePage={true}
             />
           </div>
         </>
@@ -124,7 +125,9 @@ function DisplayUserSongs(props) {
         id="votes"
         className="heartBox"
       >
-        <div class="upVoteCount"> {voteCount} </div>
+        {props.isExplorePage ? (
+          <>
+          <div class="upVoteCount"> {voteCount} </div>
         {isUpvoted ? (
           <img
             src="/heartfilled_64.svg"
@@ -140,6 +143,11 @@ function DisplayUserSongs(props) {
             onClick={handleUpvotePressed}
           />
         )}
+          </>
+        ) : (
+          <></>
+        )}
+
       </motion.div>
     </div>
   );
@@ -178,6 +186,7 @@ function Profile(props) {
           userId={props.userId}
           upvoteId={props.upvoteId}
           upvoteCount={props.upvoteCount}
+          isExplorePage={props.isExplorePage}
         />
       ) : (
         <></>
@@ -244,7 +253,7 @@ function Homepage({ userData }) {
 
         <Settings />
         {homePage ? (
-          <Profile userId={userData.userId} upvoteId={userData.userId} />
+          <Profile userId={userData.userId} upvoteId={userData.userId} isExplorePage={false} />
         ) : (
           <ExplorePage upvoteId={userData.userId} />
         )}
