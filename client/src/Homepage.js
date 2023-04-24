@@ -27,15 +27,15 @@ function ExplorePage(props) {
 
   console.log("***USERS:***");
   console.log(users);
-
   return (
     <>
       {users.map((user, index) => (
         <>
           <br></br>
-          <div key={index}>
+          <div>
             <div class="exploreText">{user.displayName}</div>
             <Profile
+              key={user.userId}
               userId={user.userId}
               upvoteId={user.userId}
               upvoteCount={user.upvoteCount}
@@ -88,7 +88,6 @@ function DisplayUserSongs(props) {
 
   return (
     <div className="userCard">
-      {props.displayName}
       <br></br>
       <motion.div id="song1" className="songBox">
         <motion.div
@@ -168,27 +167,26 @@ function DisplayUserSongs(props) {
       >
         {props.isExplorePage ? (
           <>
-          <div class="upVoteCount"> {voteCount} </div>
-        {isUpvoted ? (
-          <img
-            src="/heartfilled_64.svg"
-            alt="evan"
-            className="heartSizeFull"
-            onClick={handleUpvotePressed}
-          />
-        ) : (
-          <img
-            src="/heart-64.svg"
-            alt="heart"
-            className="heartSizeEmpty"
-            onClick={handleUpvotePressed}
-          />
-        )}
+            <div class="upVoteCount"> {voteCount} </div>
+            {isUpvoted ? (
+              <img
+                src="/heartfilled_64.svg"
+                alt="evan"
+                className="heartSizeFull"
+                onClick={handleUpvotePressed}
+              />
+            ) : (
+              <img
+                src="/heart-64.svg"
+                alt="heart"
+                className="heartSizeEmpty"
+                onClick={handleUpvotePressed}
+              />
+            )}
           </>
         ) : (
           <></>
         )}
-
       </motion.div>
     </div>
   );
@@ -264,7 +262,6 @@ function Profile(props) {
 }
 
 function Leaderboard(props) {
-
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -288,15 +285,17 @@ function Leaderboard(props) {
   console.log(users);
   const rankLabels = ["1st Place", "2nd Place", "3rd Place"];
 
-
   return (
     <>
       {users.slice(0, 3).map((user, index) => (
         <>
           <br></br>
           <div key={index}>
-          <div class="exploreText"> {index < rankLabels.length ? `${rankLabels[index]}:` : ""}
-            {" " + user.displayName}</div>
+            <div class="exploreText">
+              {" "}
+              {index < rankLabels.length ? `${rankLabels[index]}:` : ""}
+              {" " + user.displayName}
+            </div>
             <Profile
               userId={user.userId}
               upvoteId={props.upvoteId}
@@ -386,9 +385,17 @@ function Homepage({ userData }) {
         </motion.div>
 
         {homePage ? (
-          <Profile userId={userData.userId} upvoteId={userData.userId} isExplorePage={false} />
+          <Profile
+            userId={userData.userId}
+            upvoteId={userData.userId}
+            isExplorePage={false}
+          />
         ) : leaderboard ? (
-          <Leaderboard userId={userData.userId} upvoteId={userData.userId} isExplorePage={false}/>
+          <Leaderboard
+            userId={userData.userId}
+            upvoteId={userData.userId}
+            isExplorePage={false}
+          />
         ) : (
           <ExplorePage upvoteId={userData.userId} />
         )}
