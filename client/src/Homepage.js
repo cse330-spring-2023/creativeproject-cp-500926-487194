@@ -16,8 +16,9 @@ function ExplorePage(props) {
           displayName: user.displayName,
           userId: user.userId,
           upvoteCount: user.upvoteCount,
+          random: Math.random(),
         }));
-        setUsers(users);
+        setUsers(users.sort((a, b) => a.random - b.random));
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -36,7 +37,7 @@ function ExplorePage(props) {
             <div class="exploreText">{user.displayName}</div>
             <Profile
               userId={user.userId}
-              upvoteId={props.upvoteId}
+              upvoteId={user.userId}
               upvoteCount={user.upvoteCount}
               isExplorePage={true}
             />
@@ -262,18 +263,71 @@ function Profile(props) {
   );
 }
 
-function Leaderboard() {}
+function Leaderboard(props) {
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:1234/api/getUsersSortedByUpvotes")
+      .then((response) => {
+        console.log(response.data);
+        const users = response.data.map((user) => ({
+          displayName: user.displayName,
+          userId: user.userId,
+          upvoteCount: user.upvoteCount,
+        }));
+        setUsers(users);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  console.log("***USERS:***");
+  console.log(users);
+  const rankLabels = ["1st Place", "2nd Place", "3rd Place"];
+
+
+  return (
+    <>
+      {users.slice(0, 3).map((user, index) => (
+        <>
+          <br></br>
+          <div key={index}>
+          <div class="exploreText"> {index < rankLabels.length ? `${rankLabels[index]}:` : ""}
+            {" " + user.displayName}</div>
+            <Profile
+              userId={user.userId}
+              upvoteId={props.upvoteId}
+              upvoteCount={user.upvoteCount}
+              isExplorePage={true}
+            />
+          </div>
+        </>
+      ))}
+    </>
+  );
+}
 
 function Homepage({ userData }) {
   const [token, setToken] = useState(userData.token);
   const [homePage, setHomePage] = useState(true);
+  const [leaderboard, setLeaderboard] = useState(true);
 
   const goToExplore = () => {
     setHomePage(false);
+    setLeaderboard(false);
+  };
+  const goToLeaderboard = () => {
+    setHomePage(false);
+    setLeaderboard(true);
   };
   const goToProfile = () => {
     setHomePage(true);
+    setLeaderboard(false);
   };
+
   const logOut = () => {
     window.location.reload(true);
   };
@@ -315,6 +369,7 @@ function Homepage({ userData }) {
           whileTap={{ scale: 0.9 }}
           id="leaderboard"
           className="navButton"
+          onClick={goToLeaderboard}
         >
           <p className="text">Leaderboard</p>
         </motion.div>
@@ -332,6 +387,8 @@ function Homepage({ userData }) {
 
         {homePage ? (
           <Profile userId={userData.userId} upvoteId={userData.userId} isExplorePage={false} />
+        ) : leaderboard ? (
+          <Leaderboard userId={userData.userId} upvoteId={userData.userId} isExplorePage={false}/>
         ) : (
           <ExplorePage upvoteId={userData.userId} />
         )}
