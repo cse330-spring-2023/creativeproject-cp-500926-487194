@@ -47,7 +47,6 @@ app.post("/api/getAllUsers", (req, res) => {
   });
 });
 
-
 app.post("/api/getUsersSortedByUpvotes", (req, res) => {
   db.query(
     "SELECT users.*, COUNT(upvotes.userTasteId) AS upvoteCount FROM users LEFT JOIN upvotes ON users.userId = upvotes.userTasteId GROUP BY users.userId ORDER BY upvoteCount DESC",
@@ -56,17 +55,13 @@ app.post("/api/getUsersSortedByUpvotes", (req, res) => {
         console.log(err);
         res.sendStatus(500);
       } else {
-        console.log("SERVER SENT DATA")
+        console.log("SERVER SENT DATA");
         console.log(result);
         res.json(result);
       }
     }
   );
 });
-
-
-
-
 
 app.post("/api/getUserMostUpvotes", (req, res) => {
   db.query(
@@ -180,6 +175,7 @@ app.post("/api/newUser", (req, res) => {
         artist: req.body.songArtist[i],
         album: req.body.songAlbum[i],
         cover: req.body.songCover[i],
+        url: req.body.songUrl[i],
       };
     }
   } else {

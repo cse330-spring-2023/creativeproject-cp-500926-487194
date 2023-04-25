@@ -89,76 +89,111 @@ function DisplayUserSongs(props) {
   return (
     <div className="userCard">
       <br></br>
-      <motion.div id="song1" className="songBox">
-        <motion.div
-          whileHover={{ opacity: 1 }}
-          transition={{ duration: 0.1 }}
-          class="textHover"
-        >
-          <b>{props.songName[0]}</b>
-          <br />
-          {props.songArtist[0]}
-          <br />
-          {props.songAlbum[0]}
+      <a
+        href={props.songUrl[0]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="linkWrapper"
+      >
+        <motion.div id="song1" className="songBox">
+          <motion.div
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
+            class="textHover"
+          >
+            <b>{props.songName[0]}</b>
+            <br />
+            {props.songArtist[0]}
+            <br />
+            {props.songAlbum[0]}
+          </motion.div>
+          <img src={props.songCover[0]} alt="album cover" className="song" />
         </motion.div>
-        <img src={props.songCover[0]} alt="album cover" className="song" />
-      </motion.div>
-      <motion.div id="song2" className="songBox">
-        <motion.div
-          whileHover={{ opacity: 1 }}
-          transition={{ duration: 0.1 }}
-          class="textHover"
-        >
-          <b>{props.songName[1]}</b>
-          <br />
-          {props.songArtist[1]}
-          <br />
-          {props.songAlbum[1]}
+      </a>
+      <a
+        href={props.songUrl[1]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="linkWrapper"
+      >
+        <motion.div id="song2" className="songBox">
+          <motion.div
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
+            class="textHover"
+          >
+            <b>{props.songName[1]}</b>
+            <br />
+            {props.songArtist[1]}
+            <br />
+            {props.songAlbum[1]}
+          </motion.div>
+          <img src={props.songCover[1]} alt="album cover" className="song" />
         </motion.div>
-        <img src={props.songCover[1]} alt="album cover" className="song" />
-      </motion.div>
-      <motion.div id="song3" className="songBox">
-        <motion.div
-          whileHover={{ opacity: 1 }}
-          transition={{ duration: 0.1 }}
-          class="textHover"
-        >
-          <b>{props.songName[2]}</b>
-          <br />
-          {props.songArtist[2]}
-          <br />
-          {props.songAlbum[2]}
+      </a>
+      <a
+        href={props.songUrl[2]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="linkWrapper"
+      >
+        <motion.div id="song3" className="songBox">
+          <motion.div
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
+            class="textHover"
+          >
+            <b>{props.songName[2]}</b>
+            <br />
+            {props.songArtist[2]}
+            <br />
+            {props.songAlbum[2]}
+          </motion.div>
+          <img src={props.songCover[2]} alt="album cover" className="song" />
         </motion.div>
-        <img src={props.songCover[2]} alt="album cover" className="song" />
-      </motion.div>
-      <motion.div id="song4" className="songBox">
-        <motion.div
-          whileHover={{ opacity: 1 }}
-          transition={{ duration: 0.1 }}
-          class="textHover"
-        >
-          <b>{props.songName[3]}</b>
-          <br />
-          {props.songArtist[3]}
-          <br />
-          {props.songAlbum[3]}
+      </a>
+      <a
+        href={props.songUrl[3]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="linkWrapper"
+      >
+        <motion.div id="song4" className="songBox">
+          <motion.div
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
+            class="textHover"
+          >
+            <b>{props.songName[3]}</b>
+            <br />
+            {props.songArtist[3]}
+            <br />
+            {props.songAlbum[3]}
+          </motion.div>
+          <img src={props.songCover[3]} alt="album cover" className="song" />
         </motion.div>
-        <img src={props.songCover[3]} alt="album cover" className="song" />
-      </motion.div>
-      <motion.div id="song5" className="songBox">
-        <motion.div
-          whileHover={{ opacity: 1 }}
-          transition={{ duration: 0.1 }}
-          class="textHover"
-        >
-          <b>{props.songName[4]}</b>
-          <br />
-          {props.songArtist[4]}
-          <br />
-          {props.songAlbum[4]}
+      </a>
+      <a
+        href={props.songUrl[4]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="linkWrapper"
+      >
+        <motion.div id="song5" className="songBox">
+          <motion.div
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
+            class="textHover"
+          >
+            <b>{props.songName[4]}</b>
+            <br />
+            {props.songArtist[4]}
+            <br />
+            {props.songAlbum[4]}
+          </motion.div>
+          <img src={props.songCover[4]} alt="album cover" className="song" />
         </motion.div>
-        <img src={props.songCover[4]} alt="album cover" className="song" />
-      </motion.div>
+      </a>
       <motion.div
         whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 0.8 }}
@@ -197,6 +232,7 @@ function Profile(props) {
   const [songName, setSongName] = useState([]);
   const [songArtist, setSongArtist] = useState([]);
   const [songAlbum, setSongAlbum] = useState([]);
+  const [songUrl, setSongUrl] = useState([]);
   const [haveCovers, setHaveCovers] = useState(false);
 
   useEffect(() => {
@@ -233,6 +269,13 @@ function Profile(props) {
           response.data[0].song4.album,
           response.data[0].song5.album,
         ]);
+        setSongUrl([
+          response.data[0].song1.url,
+          response.data[0].song2.url,
+          response.data[0].song3.url,
+          response.data[0].song4.url,
+          response.data[0].song5.url,
+        ]);
         setHaveCovers(true);
       })
       .catch((error) => {
@@ -248,6 +291,7 @@ function Profile(props) {
           songName={songName}
           songArtist={songArtist}
           songAlbum={songAlbum}
+          songUrl={songUrl}
           displayName={props.displayName}
           userId={props.userId}
           upvoteId={props.upvoteId}
@@ -334,71 +378,73 @@ function Homepage({ userData }) {
   return (
     <>
       <div className="background">
-        <h1>Hello {userData.displayName}!</h1>
+        <div className="center">
+          <h1 className="header">Hello {userData.displayName}!</h1>
 
-        <motion.div
-          whileHover={{
-            scale: 1.1,
-            backgroundColor: "#66dd67",
-          }}
-          whileTap={{ scale: 0.9 }}
-          id="userProfile"
-          className="navButton"
-          onClick={goToProfile}
-        >
-          <p className="text">Profile</p>
-        </motion.div>
-        <motion.div
-          whileHover={{
-            scale: 1.1,
-            backgroundColor: "#66dd67",
-          }}
-          whileTap={{ scale: 0.9 }}
-          id="explore"
-          className="navButton"
-          onClick={goToExplore}
-        >
-          <p className="text">Explore</p>
-        </motion.div>
-        <motion.div
-          whileHover={{
-            scale: 1.1,
-            backgroundColor: "#66dd67",
-          }}
-          whileTap={{ scale: 0.9 }}
-          id="leaderboard"
-          className="navButton"
-          onClick={goToLeaderboard}
-        >
-          <p className="text">Leaderboard</p>
-        </motion.div>
-        <motion.div
-          whileHover={{
-            scale: 1.1,
-            backgroundColor: "#66dd67",
-          }}
-          whileTap={{ scale: 0.9 }}
-          className="logOutButton"
-          onClick={logOut}
-        >
-          <p className="text">Log-out</p>
-        </motion.div>
+          <motion.div
+            whileHover={{
+              scale: 1.1,
+              backgroundColor: "#66dd67",
+            }}
+            whileTap={{ scale: 0.9 }}
+            id="userProfile"
+            className="navButton"
+            onClick={goToProfile}
+          >
+            <p className="text">Profile</p>
+          </motion.div>
+          <motion.div
+            whileHover={{
+              scale: 1.1,
+              backgroundColor: "#66dd67",
+            }}
+            whileTap={{ scale: 0.9 }}
+            id="explore"
+            className="navButton"
+            onClick={goToExplore}
+          >
+            <p className="text">Explore</p>
+          </motion.div>
+          <motion.div
+            whileHover={{
+              scale: 1.1,
+              backgroundColor: "#66dd67",
+            }}
+            whileTap={{ scale: 0.9 }}
+            id="leaderboard"
+            className="navButton"
+            onClick={goToLeaderboard}
+          >
+            <p className="text">Leaderboard</p>
+          </motion.div>
+          <motion.div
+            whileHover={{
+              scale: 1.1,
+              backgroundColor: "#ef5533",
+            }}
+            whileTap={{ scale: 0.9 }}
+            className="logOutButton"
+            onClick={logOut}
+          >
+            <p className="text">Log-out</p>
+          </motion.div>
 
-        {homePage ? (
-          <Profile
-            userId={userData.userId}
-            upvoteId={userData.userId}
-            isExplorePage={false}
-          />
-        ) : leaderboard ? (
-          <Leaderboard
-            userId={userData.userId}
-            upvoteId={userData.userId}
-            isExplorePage={false}
-          />
-        ) : (
-          <ExplorePage upvoteId={userData.userId} />
-        )}
+          {homePage ? (
+            <Profile
+              userId={userData.userId}
+              upvoteId={userData.userId}
+              isExplorePage={false}
+            />
+          ) : leaderboard ? (
+            <Leaderboard
+              userId={userData.userId}
+              upvoteId={userData.userId}
+              isExplorePage={false}
+            />
+          ) : (
+            <ExplorePage upvoteId={userData.userId} />
+          )}
+        </div>
       </div>
     </>
   );

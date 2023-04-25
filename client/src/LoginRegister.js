@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Homepage from "./Homepage";
 import axios from "axios";
 import "./styles.css";
+import { motion } from "framer-motion";
 
 // Spotify token authentication from: https://dev.to/dom_the_dev/how-to-use-the-spotify-api-in-your-react-js-app-50pn
 
@@ -81,9 +82,16 @@ function LoginRegister({ onLogin, onRegister }) {
           )}
         </>
       ) : (
-        <>
-          <button onClick={spotifyLogin}>login to spotify</button>
-        </>
+        <div className="center">
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.8 }}
+            onClick={spotifyLogin}
+            className="navButton"
+          >
+            <p className="text">Log In To Spotify</p>
+          </motion.div>
+        </div>
       )}
     </div>
   );
@@ -100,6 +108,7 @@ function DatabaseAdd(props) {
   let artist = [];
   let album = [];
   let cover = [];
+  let urls = [];
 
   const access_token = props.token;
 
@@ -139,6 +148,7 @@ function DatabaseAdd(props) {
             const tempArtists = [];
             const tempAlbums = [];
             const tempCover = [];
+            const tempLink = [];
 
             for (let i = 0; i < 5; i++) {
               tempIds.push(response.data.items[i].id);
@@ -146,12 +156,14 @@ function DatabaseAdd(props) {
               tempArtists.push(response.data.items[i].artists[0].name);
               tempAlbums.push(response.data.items[i].album.name);
               tempCover.push(response.data.items[i].album.images[1].url);
+              tempLink.push(response.data.items[i].external_urls.spotify);
             }
             ids = tempIds;
             titles = tempTitles;
             artist = tempArtists;
             album = tempAlbums;
             cover = tempCover;
+            urls = tempLink;
           })
           .then(() => {
             // nvm totally doesnt work
@@ -165,6 +177,7 @@ function DatabaseAdd(props) {
               songArtist: artist,
               songAlbum: album,
               songCover: cover,
+              songUrl: urls,
             });
             props.onFinishQuery(true);
           })

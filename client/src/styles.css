@@ -4,7 +4,7 @@
     border-color: #66dd67;
     border-radius: 5%;
     text-align: center;
-    margin:50px;
+    margin:37.7px;
     width:165px;
 }
 
@@ -94,9 +94,25 @@ h1 {
 .logOutButton{
     display: inline-block;
     border-style: solid;
-    border-color: #66dd67;
+    border-color: #929292;
     border-radius: 5%;
     text-align: center;
-    margin:0px;
+    margin:30px;
     width:65px;
+}
+
+.linkWrapper {
+    text-decoration: none;
+    color: inherit;
+}
+
+.center{
+    width: fit-content;
+    block-size: fit-content;
+    margin:auto;
+}
+
+.header{
+    padding-top: 25px;
+    padding-left: 37.7px;
 }
